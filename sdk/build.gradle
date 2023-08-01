@@ -1,3 +1,7 @@
+plugins {
+    id 'maven-publish'
+}
+
 apply plugin: 'com.android.library'
 
 android {
@@ -50,6 +54,13 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
     resourcePrefix "wocr_"
     namespace 'cards.pay.paycardsrecognizer.sdk'
 }
@@ -67,6 +78,20 @@ dependencies {
 //    implementation "androidx.window:window:1.2.0-alpha01"
 
     testImplementation "junit:junit:4.13.2"
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.Separd-ui'
+            artifactId = 'PayCards_Android'
+            version = '1.1.2'
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
 }
 
 //afterEvaluate { project ->
